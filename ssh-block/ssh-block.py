@@ -32,7 +32,6 @@ class SSH(Daemon):
 			print >> sys.stderr, "%s -> Dosyasi Sistemde Bulunamadi. Dniff yazilimini sisteme yukleyin. !!!"% tcpkill_path
 			sys.exit(2)
 
-                 
 		if not os.path.exists(whitelist_file):
 			print >> sys.stderr, "%s -> Dosyasi Sistemde Bulunamadi !!!"% whitelist_file
 			sys.exit(3)
