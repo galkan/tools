@@ -28,9 +28,14 @@ class SSH(Daemon):
 
 	def __init__(self, pidfile, whitelist_file, interface):
 
+                if not os.path.exists(tcpkill_path):
+			print >> sys.stderr, "%s -> Dosyasi Sistemde Bulunamadi. Dniff yazilimini sisteme yukleyin. !!!"% tcpkill_path
+			sys.exit(2)
+
+                 
 		if not os.path.exists(whitelist_file):
 			print >> sys.stderr, "%s -> Dosyasi Sistemde Bulunamadi !!!"% whitelist_file
-			sys.exit(2)
+			sys.exit(3)
 
 		super(SSH, self).__init__(pidfile)
         	self.ssh_reg = re.compile("SSH\-[12]\.[0-9]", re.IGNORECASE)
