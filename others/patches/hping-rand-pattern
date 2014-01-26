@@ -1,0 +1,423 @@
+
+Only in hping_new: 1
+Only in hping_new: adbuf.o
+Only in hping_new: antigetopt.o
+Only in hping_new: apd.o
+Only in hping_new: apdutils.o
+Only in hping_new: arsglue.o
+Only in hping_new: ars.o
+Only in hping_new: binding.o
+Binary files hping_old/byteorder and hping_new/byteorder differ
+diff -crB hping_old/bytesex.h hping_new/bytesex.h
+*** hping_old/bytesex.h  2003-08-31 20:23:48.000000000 +0300
+--- hping_new/bytesex.h  2012-01-05 10:11:14.903822941 +0200
+***************
+*** 19,25 ****
+    || (defined(__mips__) && (defined(MIPSEB) || defined (__MIPSEB__)))
+  #define BYTE_ORDER_BIG_ENDIAN
+  #else
+! # error can not find the byte order for this architecture, fix bytesex.h
+  #endif
+  
+  #endif /* ARS_BYTESEX_H */
+--- 19,25 ----
+    || (defined(__mips__) && (defined(MIPSEB) || defined (__MIPSEB__)))
+  #define BYTE_ORDER_BIG_ENDIAN
+  #else
+! #define BYTE_ORDER_BIG_ENDIAN
+  #endif
+  
+  #endif /* ARS_BYTESEX_H */
+Only in hping_new: cksum.o
+Only in hping_new: datafiller.o
+Only in hping_new: datahandler.o
+diff -crB hping_old/.depend hping_new/.depend
+*** hping_old/.depend	2005-11-05 12:31:42.000000000 +0200
+--- hping_new/.depend	2012-01-05 11:27:05.053823611 +0200
+***************
+*** 1,7 ****
+  adbuf.o: adbuf.c adbuf.h
+  antigetopt.o: antigetopt.c antigetopt.h
+! apd.o: apd.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h \
+!  hstring.h hex.h
+  apdutils.o: apdutils.c
+  ars.o: ars.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h
+  arsglue.o: arsglue.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h
+--- 1,7 ----
+  adbuf.o: adbuf.c adbuf.h
+  antigetopt.o: antigetopt.c antigetopt.h
+! apd.o: apd.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h hstring.h \
+!  hex.h
+  apdutils.o: apdutils.c
+  ars.o: ars.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h
+  arsglue.o: arsglue.c ars.h systype.h in.h bytesex.h adbuf.h fixtypes.h
+***************
+*** 18,25 ****
+   fixtypes.h hcmp.h globals.h
+  gentables.o: gentables.c sbignum.h fixtypes.h
+  gethostname.o: gethostname.c
+! getifname.o: getifname.c hping2.h byteorder.h systype.h fixtypes.h \
+!  hcmp.h globals.h
+  getlhs.o: getlhs.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  getusec.o: getusec.c
+--- 18,25 ----
+   fixtypes.h hcmp.h globals.h
+  gentables.o: gentables.c sbignum.h fixtypes.h
+  gethostname.o: gethostname.c
+! getifname.o: getifname.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+!  globals.h
+  getlhs.o: getlhs.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  getusec.o: getusec.c
+***************
+*** 28,35 ****
+  if_promisc.o: if_promisc.c hping2.h byteorder.h systype.h fixtypes.h \
+   hcmp.h globals.h
+  interface.o: interface.c
+! ip_opt_build.o: ip_opt_build.c hping2.h byteorder.h systype.h \
+!  fixtypes.h hcmp.h globals.h
+  libpcap_stuff.o: libpcap_stuff.c hping2.h byteorder.h systype.h \
+   fixtypes.h hcmp.h globals.h
+  listen.o: listen.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+--- 28,35 ----
+  if_promisc.o: if_promisc.c hping2.h byteorder.h systype.h fixtypes.h \
+   hcmp.h globals.h
+  interface.o: interface.c
+! ip_opt_build.o: ip_opt_build.c hping2.h byteorder.h systype.h fixtypes.h \
+!  hcmp.h globals.h
+  libpcap_stuff.o: libpcap_stuff.c hping2.h byteorder.h systype.h \
+   fixtypes.h hcmp.h globals.h
+  listen.o: listen.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+***************
+*** 50,75 ****
+  relid.o: relid.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  resolve.o: resolve.c
+! rtt.o: rtt.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+!  globals.h
+! sbignum-tables.o: sbignum-tables.c sbignum-tables.h sbignum.h \
+!  fixtypes.h
+  sbignum.o: sbignum.c sbignum.h fixtypes.h sbignum-tables.h
+! scan.o: scan.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+!  globals.h hstring.h
+  script.o: script.c
+! send.o: send.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+- sendhcmp.o: sendhcmp.c hping2.h byteorder.h systype.h fixtypes.h \
+-  hcmp.h globals.h
+- sendicmp.o: sendicmp.c hping2.h byteorder.h systype.h fixtypes.h \
+-  hcmp.h globals.h
+  sendip.o: sendip.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  sendip_handler.o: sendip_handler.c hping2.h byteorder.h systype.h \
+   fixtypes.h hcmp.h globals.h
+! sendrawip.o: sendrawip.c hping2.h byteorder.h systype.h fixtypes.h \
+!  hcmp.h globals.h
+  sendtcp.o: sendtcp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  sendudp.o: sendudp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+--- 50,72 ----
+  relid.o: relid.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  resolve.o: resolve.c
+! rtt.o: rtt.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h globals.h
+! sbignum-tables.o: sbignum-tables.c sbignum-tables.h sbignum.h fixtypes.h
+  sbignum.o: sbignum.c sbignum.h fixtypes.h sbignum-tables.h
+! scan.o: scan.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h globals.h \
+!  hstring.h
+  script.o: script.c
+! send.o: send.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h globals.h
+! sendhcmp.o: sendhcmp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+!  globals.h
+! sendicmp.o: sendicmp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  sendip.o: sendip.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  sendip_handler.o: sendip_handler.c hping2.h byteorder.h systype.h \
+   fixtypes.h hcmp.h globals.h
+! sendrawip.o: sendrawip.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+!  globals.h
+  sendtcp.o: sendtcp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+   globals.h
+  sendudp.o: sendudp.c hping2.h byteorder.h systype.h fixtypes.h hcmp.h \
+***************
+*** 81,87 ****
+   hcmp.h globals.h
+  strlcpy.o: strlcpy.c
+  usage.o: usage.c
+! version.o: version.c release.h hping2.h byteorder.h systype.h \
+!  fixtypes.h hcmp.h
+  waitpacket.o: waitpacket.c hping2.h byteorder.h systype.h fixtypes.h \
+   hcmp.h globals.h
+--- 78,84 ----
+   hcmp.h globals.h
+  strlcpy.o: strlcpy.c
+  usage.o: usage.c
+! version.o: version.c release.h hping2.h byteorder.h systype.h fixtypes.h \
+!  hcmp.h
+  waitpacket.o: waitpacket.c hping2.h byteorder.h systype.h fixtypes.h \
+   hcmp.h globals.h
+Only in hping_new: display_ipopt.o
+Only in hping_new: gethostname.o
+Only in hping_new: getifname.o
+Only in hping_new: getlhs.o
+Only in hping_new: getusec.o
+diff -crB hping_old/globals.h hping_new/globals.h
+*** hping_old/globals.h	2004-06-18 12:53:11.000000000 +0300
+--- hping_new/globals.h	2012-01-05 10:06:09.443822897 +0200
+***************
+*** 82,87 ****
+--- 82,88 ----
+  		opt_tr_no_rtt,
+  		opt_rand_dest,
+  		opt_rand_source,
++ 		opt_rand_pattern_source,
+  		opt_lsrr,
+  		opt_ssrr,
+  		opt_beep,
+***************
+*** 119,124 ****
+--- 120,126 ----
+  		ifstraddr[1024],
+  		datafilename[1024],
+  		targetname[1024],
++ 		pattern_source[1024],
+  		targetstraddr[1024],
+  		spoofaddr[1024],
+  		icmp_ip_srcip[1024],
+Only in hping_new: hex.o
+Only in hping_new: hping3
+Only in hping_new: hstring.o
+Only in hping_new: interface.o
+Only in hping_new: ip_opt_build.o
+Only in hping_new: libpcap_stuff.o
+Only in hping_new: listen.o
+Only in hping_new: logicmp.o
+diff -crB hping_old/main.c hping_new/main.c
+*** hping_old/main.c	2004-06-18 12:53:11.000000000 +0300
+--- hping_new/main.c	2012-01-05 11:38:49.533823715 +0200
+***************
+*** 100,105 ****
+--- 100,106 ----
+  	opt_tr_no_rtt	= FALSE,
+  	opt_rand_dest	= FALSE,
+  	opt_rand_source	= FALSE,
++ 	opt_rand_pattern_source = FALSE,
+  	opt_lsrr        = FALSE,
+  	opt_ssrr        = FALSE,
+  	opt_cplt_rte    = FALSE,
+***************
+*** 134,139 ****
+--- 135,141 ----
+  char
+  	datafilename	[1024],
+  	targetname	[1024],
++ 	pattern_source  [1024] = {'\0'},
+  	targetstraddr	[1024],
+  	ifname		[1024] = {'\0'},
+  	ifstraddr	[1024],
+***************
+*** 250,255 ****
+--- 252,263 ----
+  		exit(1);
+  	}
+  
++ 	if (opt_rand_source && opt_rand_pattern_source)
++ 	{
++ 		printf("Not use both --rand-pattern-source && --rand-source options !\n");
++ 		exit(37);
++ 	}
++ 	
+  	/* get physical layer header size */
+  	if ( get_linkhdr_size(ifname) == -1 ) {
+  		printf("[main] physical layer header size unknown\n");
+Only in hping_new: main.o
+diff -crB hping_old/Makefile hping_new/Makefile
+*** hping_old/Makefile	2005-11-05 12:31:41.000000000 +0200
+--- hping_new/Makefile	2012-01-05 11:27:04.233823611 +0200
+***************
+*** 9,15 ****
+  CC= gcc
+  AR=/usr/bin/ar
+  RANLIB=/usr/bin/ranlib
+! CCOPT= -O2 -Wall  -I/usr/include/tcl8.4 -DUSE_TCL
+  DEBUG= -g
+  #uncomment the following if you need libpcap based build under linux
+  #(not raccomanded)
+--- 9,15 ----
+  CC= gcc
+  AR=/usr/bin/ar
+  RANLIB=/usr/bin/ranlib
+! CCOPT= -O2 -Wall   
+  DEBUG= -g
+  #uncomment the following if you need libpcap based build under linux
+  #(not raccomanded)
+***************
+*** 50,63 ****
+  	$(RANLIB) $@
+  
+  hping3: byteorder.h $(OBJ)
+! 	$(CC) -o hping3 $(CCOPT) $(DEBUG) $(OBJ) -L/usr/local/lib $(PCAP)  -ltcl8.4 -lm -lpthread
+  	@echo
+  	./hping3 -v
+  	@echo "use \`make strip' to strip hping3 binary"
+  	@echo "use \`make install' to install hping3"
+  
+  hping3-static: byteorder.h $(OBJ)
+! 	$(CC) -static -o hping3-static $(CCOPT) $(DEBUG) $(OBJ) -L/usr/local/lib $(PCAP)  -ltcl8.4 -lm -lpthread -ldl
+  
+  byteorder.h:
+  	./configure
+--- 50,63 ----
+  	$(RANLIB) $@
+  
+  hping3: byteorder.h $(OBJ)
+! 	$(CC) -o hping3 $(CCOPT) $(DEBUG) $(OBJ) -L/usr/local/lib $(PCAP)  -ltcl8.5 -lm -lpthread
+  	@echo
+  	./hping3 -v
+  	@echo "use \`make strip' to strip hping3 binary"
+  	@echo "use \`make install' to install hping3"
+  
+  hping3-static: byteorder.h $(OBJ)
+! 	$(CC) -static -o hping3-static $(CCOPT) $(DEBUG) $(OBJ) -L/usr/local/lib $(PCAP)  -ltcl8.5 -lm -lpthread -ldl
+  
+  byteorder.h:
+  	./configure
+Only in hping_new: memlockall.o
+Only in hping_new: memlock.o
+Only in hping_new: memstr.o
+Only in hping_new: memunlockall.o
+Only in hping_new: memunlock.o
+Only in hping_new: opensockraw.o
+diff -crB hping_old/parseoptions.c hping_new/parseoptions.c
+*** hping_old/parseoptions.c	2004-06-18 12:53:11.000000000 +0300
+--- hping_new/parseoptions.c	2012-01-05 11:04:08.043823409 +0200
+***************
+*** 32,38 ****
+  	OPT_ICMP_IPLEN, OPT_ICMP_IPID, OPT_ICMP_IPPROTO, OPT_ICMP_CKSUM,
+  	OPT_ICMP_TS, OPT_ICMP_ADDR, OPT_TCPEXITCODE, OPT_FAST, OPT_TR_KEEP_TTL,
+  	OPT_TCP_TIMESTAMP, OPT_TR_STOP, OPT_TR_NO_RTT, OPT_ICMP_HELP,
+! 	OPT_RAND_DEST, OPT_RAND_SOURCE, OPT_LSRR, OPT_SSRR, OPT_ROUTE_HELP,
+  	OPT_ICMP_IPSRC, OPT_ICMP_IPDST, OPT_ICMP_SRCPORT, OPT_ICMP_DSTPORT,
+  	OPT_ICMP_GW, OPT_FORCE_ICMP, OPT_APD_SEND, OPT_SCAN, OPT_FASTER,
+  	OPT_BEEP, OPT_FLOOD };
+--- 32,38 ----
+  	OPT_ICMP_IPLEN, OPT_ICMP_IPID, OPT_ICMP_IPPROTO, OPT_ICMP_CKSUM,
+  	OPT_ICMP_TS, OPT_ICMP_ADDR, OPT_TCPEXITCODE, OPT_FAST, OPT_TR_KEEP_TTL,
+  	OPT_TCP_TIMESTAMP, OPT_TR_STOP, OPT_TR_NO_RTT, OPT_ICMP_HELP,
+! 	OPT_RAND_DEST, OPT_RAND_SOURCE, OPT_RAND_PATTERN_SOURCE, OPT_LSRR, OPT_SSRR, OPT_ROUTE_HELP,
+  	OPT_ICMP_IPSRC, OPT_ICMP_IPDST, OPT_ICMP_SRCPORT, OPT_ICMP_DSTPORT,
+  	OPT_ICMP_GW, OPT_FORCE_ICMP, OPT_APD_SEND, OPT_SCAN, OPT_FASTER,
+  	OPT_BEEP, OPT_FLOOD };
+***************
+*** 112,117 ****
+--- 112,118 ----
+  	{ '\0',	"tr-no-rtt",	OPT_TR_NO_RTT,		AGO_NOARG },
+  	{ '\0', "rand-dest",	OPT_RAND_DEST,		AGO_NOARG },
+  	{ '\0', "rand-source",	OPT_RAND_SOURCE,	AGO_NOARG },
++ 	{ '\0', "rand-pattern-source",	OPT_RAND_PATTERN_SOURCE,	AGO_NEEDARG },
+  	{ '\0', "lsrr",		OPT_LSRR, 		AGO_NEEDARG|AGO_EXCEPT0 },
+  	{ '\0', "ssrr",		OPT_SSRR, 		AGO_NEEDARG|AGO_EXCEPT0 },
+  	{ '\0', "route-help",   OPT_ROUTE_HELP,		AGO_NOARG },
+***************
+*** 524,529 ****
+--- 525,534 ----
+  		case OPT_RAND_SOURCE:
+  			opt_rand_source = TRUE;
+  			break;
++ 		case OPT_RAND_PATTERN_SOURCE:
++ 			opt_rand_pattern_source = TRUE;
++ 			strlcpy (pattern_source, ago_optarg, 1024);	
++                         break;
+  		case OPT_LSRR:
+  			opt_lsrr = TRUE;
+  			parse_route(lsr, &lsr_length, ago_optarg);
+Only in hping_new: parseoptions.o
+Only in hping_new: random.o
+Only in hping_new: rapd.o
+Only in hping_new: relid.o
+Only in hping_new: resolve.o
+Only in hping_new: rtt.o
+Only in hping_new: sbignum.o
+Only in hping_new: sbignum-tables.o
+Only in hping_new: scan.o
+Only in hping_new: script.o
+diff -crB hping_old/send.c hping_new/send.c
+*** hping_old/send.c	2003-08-31 20:23:53.000000000 +0300
+--- hping_new/send.c	2012-01-05 11:26:59.543823609 +0200
+***************
+*** 61,66 ****
+--- 61,104 ----
+  		printf("DEBUG: the dest address is %u.%u.%u.%u\n",
+  				ra[0], ra[1], ra[2], ra[3]);
+  	}
++ 
++ }
++ 
++ static void select_random_pattern(void)
++ {
++         unsigned char ra[4];
++         char a[4], b[4], c[4], d[4];
++ 
++         if (sscanf(pattern_source, "%4[^.].%4[^.].%4[^.].%4[^.]",a , b, c, d) != 4)
++         {
++                 fprintf(stderr,
++                         "wrong --rand-pattern-source target host, correct examples:\n"
++                         " x.x.x.x, 192.168.x.x, 128.x.x.255\n"
++                         "you typed: %s\n", pattern_source);
++                 exit(1);
++         }
++ 
++ 	a[3] = b[3] = c[3] = d[3] = '\0';
++ 
++ 	if (ra[0] = a[0] == 'x')
++ 	{
++ 		printf("Try --rand-source yeah :) \n");
++ 		exit(10);
++ 	}
++ 	else
++ 	{
++ 		ra[0] = a[0] = strtoul(a, NULL, 0);
++ 	}
++ 
++         ra[1] = b[0] == 'x' ? (hp_rand() & 0xFF) : strtoul(b, NULL, 0);
++         ra[2] = c[0] == 'x' ? (hp_rand() & 0xFF) : strtoul(c, NULL, 0);
++         ra[3] = d[0] == 'x' ? (hp_rand() & 0xFF) : strtoul(d, NULL, 0);
++ 	memcpy(&local.sin_addr.s_addr, ra, 4);
++ 
++         if (opt_debug)
++ 	{
++                 printf("DEBUG: the source address is %u.%u.%u.%u\n", ra[0], ra[1], ra[2], ra[3]);
++         }
+  }
+  
+  /* The signal handler for SIGALRM will send the packets */
+***************
+*** 72,77 ****
+--- 110,117 ----
+  		select_next_random_dest();
+  	if (opt_rand_source)
+  		select_next_random_source();
++ 	if (opt_rand_pattern_source)
++ 		select_random_pattern();
+  
+  	if (opt_rawipmode)	send_rawip();
+  	else if (opt_icmpmode)	send_icmp();
+Only in hping_new: sendhcmp.o
+Only in hping_new: sendicmp.o
+Only in hping_new: sendip_handler.o
+Only in hping_new: sendip.o
+Only in hping_new: send.o
+Only in hping_new: sendrawip.o
+Only in hping_new: sendtcp.o
+Only in hping_new: sendudp.o
+Only in hping_new: signal.o
+Only in hping_new: sockopt.o
+Only in hping_new: split.o
+Only in hping_new: statistics.o
+Only in hping_new: strlcpy.o
+Only in hping_new: usage.o
+Only in hping_new: version.o
+Only in hping_new: waitpacket.o
+
