@@ -43,7 +43,8 @@ if __name__ == "__main__":
      Log.log_message(1, "Mesaj")
 
 
-# vi /etc/rsyslog.conf     
+# vi /etc/rsyslog.conf
+# $ModLoad imudp
 # $UDPServerAddress 127.0.0.1
 # $UDPServerRun 514
 # local5.info                             -/var/log/galkan.log
