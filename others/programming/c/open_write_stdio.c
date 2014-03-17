@@ -8,7 +8,7 @@ int main(void)
         int fd;
         char buffer[2048];
         char *message_name = "dosya.txt";
-
+ 
 
         if ( (fd = open(message_name, O_WRONLY|O_CREAT|O_TRUNC,0644)) ==- 1)
         {
