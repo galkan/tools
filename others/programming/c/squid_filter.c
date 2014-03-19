@@ -57,7 +57,7 @@ int main(int argc, const char *argv[])
 			else
 				continue;	
 
-			if (strcmp(domain, "www.takvim.com.tr") == 0) {
+			if (strcmp(domain, "www.google.com") == 0) {
 				char *new_url = (char *)malloc(URL_SIZE);
 				sprintf(new_url, "http://www.galkan.net %s %s %s\n", squid_line->srcip, squid_line->ident, squid_line->method);
 				printf("%s",new_url);			
