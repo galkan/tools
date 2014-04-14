@@ -99,7 +99,7 @@ class ArpSpoof:
 	      else:
 		  sys.exit(0)
     
-	
+	    signal.signal(signal.SIGINT, self.rearp)	
 	    while True:
 		sendp(pkt, inter = 2, iface = self.options.interface)
 	
@@ -111,6 +111,5 @@ class ArpSpoof:
 if __name__ == "__main__":
 	
 	arpspoof = ArpSpoof()
-	signal.signal(signal.SIGINT, arpspoof.rearp)
 	arpspoof.main()
 	
