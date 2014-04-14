@@ -101,7 +101,7 @@ class ArpSpoof:
     
 	    signal.signal(signal.SIGINT, self.rearp)	
 	    while True:
-		sendp(pkt, inter = 2, iface = self.options.interface)
+		sendp(pkt, inter = 2, iface = self.options.interface, verbose=False)
 	
 	
 ##
