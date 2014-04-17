@@ -26,7 +26,6 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 echo "1" > /proc/sys/net/ipv4/ip_forward
-
 """
 
 	
