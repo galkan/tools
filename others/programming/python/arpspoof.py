@@ -30,7 +30,6 @@ class ArpSpoof:
 	    parser.add_option('-i', dest='interface', help='Specify the interface to use')
 	    parser.add_option('-t', dest='target', help='Specify a particular host to ARP poison')
 	    parser.add_option('-m', dest='mode', default='req', help='Poisoning mode: requests (req) or replies (rep) [default: %default]')
-	    parser.add_option('-s', action='store_true', dest='summary', default=False, help='Show packet summary and ask for confirmation before poisoning')
 	    (self.options, self.args) = parser.parse_args()
 
 	    if len(self.args) != 1 or self.options.interface == None:
@@ -91,14 +90,6 @@ class ArpSpoof:
 	    elif self.options.mode == 'rep':
 		pkt = self.build_rep()
 
-	    if self.options.summary == True:
-	      pkt.show()
-	      ans = raw_input('\n[*] Continue? [Y|n]: ').lower()
-	      if ans == 'y' or len(ans) == 0:
-		  pass
-	      else:
-		  sys.exit(0)
-    
 	    signal.signal(signal.SIGINT, self.rearp)	
 	    while True:
 		sendp(pkt, inter = 2, iface = self.options.interface, verbose=False)
