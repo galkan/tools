@@ -82,7 +82,9 @@ class DnsSpoof:
                 while True:
                         sniff(filter = self.dns_filter, iface = self.args.interface, store = 0, prn = self.dns_spoof)
 
-
+##
+### Main ...
+##
 
 if __name__ == "__main__":
         dnsspoof = DnsSpoof()
