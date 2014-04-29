@@ -2,24 +2,36 @@
 
 import sys
 
-class Deneme(Exception):
-        def __init__(self, hata_mess):
-                self.hata = hata_mess
+class CustomExceptions(Exception):
+        def __init__(self, err_mess):
+                self.err = err_mess
 
         def __str__(self):
-                return self.hata
+                return self.err
 
 
-def foo():
-	if int(sys.argv[1]) > 5:
-		raise Deneme("HATA")
-	else:
-		print "OK"
+class Deneme:
+
+        def __init__(self):
+                try:
+                        self.file_path = sys.argv[1]
+                except:
+                        raise CustomExceptions("Komut satiri argumani alinamadi !!!")
+
+        def foo(self):
+                try:
+                        for line in open(self.file_path, "r"):
+                                print line
+                except Exception, err:
+                        raise CustomExceptions("%s"% err)
+
 
 
 if __name__ == "__main__":
-	try:
-		foo()
-	except Deneme, mess:
-		print mess
- 
+
+        try:
+                deneme = Deneme()
+                deneme.foo()
+        except CustomExceptions, mess:
+                print >> sys.stderr, mess
+                sys.exit(1)
