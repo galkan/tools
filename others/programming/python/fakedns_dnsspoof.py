@@ -94,8 +94,11 @@ class DnsSpoof:
                                 if control == 1:
                                         udps.sendto(self.response(line.split()[0]), addr)
                                 else:
-                                        response_ip = socket.gethostbyname(real_domain[:-1])
-                                        udps.sendto(self.response(response_ip), addr)
+                                	try:	
+                                        	response_ip = socket.gethostbyname(real_domain[:-1])
+                                        	udps.sendto(self.response(response_ip), addr)
+					except:
+						pass
 
                 except KeyboardInterrupt:
                         self.db_file.close()
