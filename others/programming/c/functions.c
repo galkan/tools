@@ -1,0 +1,11 @@
+strcpy
+strncpy
+strchr
+strstr
+strcmp
+strcat
+strtok
+memset
+memcpy
+sprintf
+fprintf
