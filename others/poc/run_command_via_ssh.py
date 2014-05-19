@@ -96,6 +96,9 @@ class Main:
                 for line in open(self.args.config,"r"):
                         q.put(line)
 
+                if not self.args.thread:
+                        self.args.thread = 5                
+
                 for i in range(int(self.args.thread)):
                         t = threading.Thread(target = self.execute_command, args = (q,))
                         t.start()
