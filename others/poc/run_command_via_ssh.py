@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+__VERSION__ = '0.1'
+__AUTHOR__ = 'Galkan'
+__DATE__ = '2014'
+
 """
 In order to install paramiko, follow steps below...
 # wget https://github.com/paramiko/paramiko/archive/master.zip
