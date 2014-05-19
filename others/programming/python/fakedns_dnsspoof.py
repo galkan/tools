@@ -10,6 +10,9 @@ except ImportError,e:
         sys.stdout.write("%s\n" %e)
         sys.exit(1)
 	
+"""
+is is derived from http://code.activestate.com/recipes/491264-mini-fake-dns-server/
+"""
 
 class DnsSpoof:
 
