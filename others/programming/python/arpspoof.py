@@ -15,6 +15,10 @@ except ImportError,e:
         sys.exit(1)
 
 """
+is is derived from https://github.com/byt3bl33d3r/arpspoof/blob/master/arpspoof.py
+""
+
+"""
 iptables -F
 iptables -X
 iptables -t nat -F
