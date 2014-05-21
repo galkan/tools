@@ -13,6 +13,8 @@ In order to install paramiko, follow steps below...
 # pip install ecsda
 """
 
+#echo -e "Test\nTest" | passwd root
+
 try:
         import paramiko
         import argparse
