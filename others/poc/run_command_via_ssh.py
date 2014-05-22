@@ -3,10 +3,6 @@
 """
 In order to install paramiko, follow steps below... 
 # apt-get install pip
-# wget https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz#md5=01026f87978932060cc86c1dc527903e
-# tar -zxfv pip-1.5.6.tar.gz
-# cd pip-1.5.6
-# python setup.py install
 # pip install ecsda
 # wget https://github.com/paramiko/paramiko/archive/master.zip
 # unzip master.zip
