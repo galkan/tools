@@ -49,7 +49,7 @@ class ArpSpoof:
 	def build_req(self):
 	  
 	    if self.options.target == None:
-		pkt = Ether(src = mac, dst = self.broadcast_mac)/ARP(hwsrc = self.mac, psrc = self.args[0], pdst = self.args[0])
+		pkt = Ether(src = self.mac, dst = self.broadcast_mac)/ARP(hwsrc = self.mac, psrc = self.args[0], pdst = self.args[0])
 	    elif self.options.target:
 		target_mac = getmacbyip(self.options.target)
 		if target_mac == None:
