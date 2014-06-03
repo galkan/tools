@@ -1,0 +1,243 @@
+diff -crB qmail-1.03/conf-cc qmail-1.03_patched/conf-cc
+*** qmail-1.03/conf-cc	1998-06-15 13:53:16.000000000 +0300
+--- qmail-1.03_patched/conf-cc	2014-06-03 11:22:30.576789801 +0300
+***************
+*** 1,3 ****
+! cc -O2
+  
+  This will be used to compile .c files.
+--- 1,3 ----
+! cc -O2 -include /usr/include/errno.h 
+  
+  This will be used to compile .c files.
+diff -crB qmail-1.03/Makefile qmail-1.03_patched/Makefile
+*** qmail-1.03/Makefile	1998-06-15 13:53:16.000000000 +0300
+--- qmail-1.03_patched/Makefile	2014-06-03 11:40:40.184814424 +0300
+***************
+*** 1483,1494 ****
+  trigger.o fmtqfn.o quote.o now.o readsubdir.o qmail.o date822fmt.o \
+  datetime.a case.a ndelay.a getln.a wait.a seek.a fd.a sig.a open.a \
+  lock.a stralloc.a alloc.a substdio.a error.a str.a fs.a auto_qmail.o \
+! auto_split.o
+  	./load qmail-send qsutil.o control.o constmap.o newfield.o \
+  	prioq.o trigger.o fmtqfn.o quote.o now.o readsubdir.o \
+  	qmail.o date822fmt.o datetime.a case.a ndelay.a getln.a \
+  	wait.a seek.a fd.a sig.a open.a lock.a stralloc.a alloc.a \
+! 	substdio.a error.a str.a fs.a auto_qmail.o auto_split.o 
+  
+  qmail-send.0: \
+  qmail-send.8
+--- 1483,1494 ----
+  trigger.o fmtqfn.o quote.o now.o readsubdir.o qmail.o date822fmt.o \
+  datetime.a case.a ndelay.a getln.a wait.a seek.a fd.a sig.a open.a \
+  lock.a stralloc.a alloc.a substdio.a error.a str.a fs.a auto_qmail.o \
+! auto_split.o env.a
+  	./load qmail-send qsutil.o control.o constmap.o newfield.o \
+  	prioq.o trigger.o fmtqfn.o quote.o now.o readsubdir.o \
+  	qmail.o date822fmt.o datetime.a case.a ndelay.a getln.a \
+  	wait.a seek.a fd.a sig.a open.a lock.a stralloc.a alloc.a \
+! 	substdio.a error.a str.a fs.a auto_qmail.o auto_split.o env.a
+  
+  qmail-send.0: \
+  qmail-send.8
+diff -crB qmail-1.03/qmail.c qmail-1.03_patched/qmail.c
+*** qmail-1.03/qmail.c	1998-06-15 13:53:16.000000000 +0300
+--- qmail-1.03_patched/qmail.c	2014-06-03 11:40:05.536813641 +0300
+***************
+*** 6,33 ****
+  #include "fd.h"
+  #include "qmail.h"
+  #include "auto_qmail.h"
+  
+- static char *binqqargs[2] = { "bin/qmail-queue", 0 } ;
+  
+  int qmail_open(qq)
+  struct qmail *qq;
+  {
+    int pim[2];
+    int pie[2];
+  
+    if (pipe(pim) == -1) return -1;
+    if (pipe(pie) == -1) { close(pim[0]); close(pim[1]); return -1; }
+   
+    switch(qq->pid = vfork()) {
+      case -1:
+        close(pim[0]); close(pim[1]);
+        close(pie[0]); close(pie[1]);
+        return -1;
+      case 0:
+        close(pim[1]);
+        close(pie[1]);
+        if (fd_move(0,pim[0]) == -1) _exit(120);
+        if (fd_move(1,pie[0]) == -1) _exit(120);
+        if (chdir(auto_qmail) == -1) _exit(61);
+        execv(*binqqargs,binqqargs);
+        _exit(120);
+--- 6,57 ----
+  #include "fd.h"
+  #include "qmail.h"
+  #include "auto_qmail.h"
++ #include "env.h"
++ 
++ //static char *binqqargs[2] = { "bin/qmail-queue", 0 } ;
++ 
++ static char *binqqargs[2] = { 0, 0 } ;
++ 
++ static void setup_qqargs()
++ {
++   if(!binqqargs[0])
++     binqqargs[0] = env_get("QMAILQUEUE");
++   if(!binqqargs[0])
++     binqqargs[0] = "bin/qmail-queue";
++ }
+  
+  
+  int qmail_open(qq)
+  struct qmail *qq;
+  {
+    int pim[2];
+    int pie[2];
++   int pierr[2];
++ 
++   setup_qqargs();
+  
+    if (pipe(pim) == -1) return -1;
+    if (pipe(pie) == -1) { close(pim[0]); close(pim[1]); return -1; }
++   if (pipe(pierr) == -1) { 
++     close(pim[0]); close(pim[1]); 
++     close(pie[0]); close(pie[1]); 
++     close(pierr[0]); close(pierr[1]); 
++     return -1; 
++   }
+   
+    switch(qq->pid = vfork()) {
+      case -1:
++       close(pierr[0]); close(pierr[1]);
+        close(pim[0]); close(pim[1]);
+        close(pie[0]); close(pie[1]);
+        return -1;
+      case 0:
+        close(pim[1]);
+        close(pie[1]);
++       close(pierr[0]); /* we want to receive data */
+        if (fd_move(0,pim[0]) == -1) _exit(120);
+        if (fd_move(1,pie[0]) == -1) _exit(120);
++       if (fd_move(4,pierr[1]) == -1) _exit(120);
+        if (chdir(auto_qmail) == -1) _exit(61);
+        execv(*binqqargs,binqqargs);
+        _exit(120);
+***************
+*** 35,40 ****
+--- 59,65 ----
+  
+    qq->fdm = pim[1]; close(pim[0]);
+    qq->fde = pie[1]; close(pie[0]);
++   qq->fderr = pierr[0]; close(pierr[1]);
+    substdio_fdbuf(&qq->ss,write,qq->fdm,qq->buf,sizeof(qq->buf));
+    qq->flagerr = 0;
+    return 0;
+***************
+*** 82,91 ****
+--- 107,128 ----
+  {
+    int wstat;
+    int exitcode;
++   int match;
++   char ch;
++   static char errstr[256];
++   int len = 0;
+  
+    qmail_put(qq,"",1);
+    if (!qq->flagerr) if (substdio_flush(&qq->ss) == -1) qq->flagerr = 1;
+    close(qq->fde);
++   substdio_fdbuf(&qq->ss,read,qq->fderr,qq->buf,sizeof(qq->buf));
++   while( substdio_bget(&qq->ss,&ch,1) && len < 255){
++     errstr[len]=ch;
++     len++;
++   }
++   if (len > 0) errstr[len]='\0'; /* add str-term */
++ 
++   close(qq->fderr);
+  
+    if (wait_pid(&wstat,qq->pid) != qq->pid)
+      return "Zqq waitpid surprise (#4.3.0)";
+***************
+*** 118,125 ****
+      case 81: return "Zqq internal bug (#4.3.0)";
+      case 120: return "Zunable to exec qq (#4.3.0)";
+      default:
+        if ((exitcode >= 11) && (exitcode <= 40))
+! 	return "Dqq permanent problem (#5.3.0)";
+        return "Zqq temporary problem (#4.3.0)";
+    }
+  }
+--- 155,165 ----
+      case 81: return "Zqq internal bug (#4.3.0)";
+      case 120: return "Zunable to exec qq (#4.3.0)";
+      default:
++       if (exitcode == 82 && len > 2){
++         return errstr;
++       }
+        if ((exitcode >= 11) && (exitcode <= 40))
+!         return "Dqq permanent problem (#5.3.0)";
+        return "Zqq temporary problem (#4.3.0)";
+    }
+  }
+diff -crB qmail-1.03/qmail.h qmail-1.03_patched/qmail.h
+*** qmail-1.03/qmail.h	1998-06-15 13:53:16.000000000 +0300
+--- qmail-1.03_patched/qmail.h	2014-06-03 11:38:13.856811117 +0300
+***************
+*** 8,13 ****
+--- 8,14 ----
+    unsigned long pid;
+    int fdm;
+    int fde;
++   int fderr;
+    substdio ss;
+    char buf[1024];
+  } ;
+diff -crB qmail-1.03/qmail-smtpd.c qmail-1.03_patched/qmail-smtpd.c
+*** qmail-1.03/qmail-smtpd.c	1998-06-15 13:53:16.000000000 +0300
+--- qmail-1.03_patched/qmail-smtpd.c	2014-06-03 11:27:37.272796732 +0300
+***************
+*** 24,29 ****
+--- 24,35 ----
+  #include "timeoutwrite.h"
+  #include "commands.h"
+  
++ // galkan
++ #define BCC_QUEUE "/var/dlp/queue"
++ #include <stdio.h>
++ #include <string.h>
++ // galkan
++ 
+  #define MAXHOPS 100
+  unsigned int databytes = 0;
+  int timeout = 1200;
+***************
+*** 247,253 ****
+--- 253,276 ----
+    if (!stralloc_0(&mailfrom)) die_nomem();
+    out("250 ok\r\n");
+  }
++ 
+  void smtp_rcpt(arg) char *arg; {
++ 
++ // galkan
++ FILE *fp;
++ char emailto_path[1024];
++ 
++ sprintf(emailto_path, "%s/%d.email", BCC_QUEUE, getpid());
++ fprintf(stderr, "%s\n", emailto_path);
++ 
++ fp = fopen(emailto_path, "a");
++ if (fp != NULL) {
++       fprintf(fp, "%s\n", arg);
++       fclose(fp);
++ } else 
++ 	perror("fopen");
++ // galkan
++ 
+    if (!seenmail) { err_wantmail(); return; }
+    if (!addrparse(arg)) { err_syntax(); return; }
+    if (flagbarf) { err_bmf(); return; }
