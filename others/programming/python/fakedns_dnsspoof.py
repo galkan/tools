@@ -11,7 +11,7 @@ except ImportError,e:
         sys.exit(1)
 	
 """
-is is derived from http://code.activestate.com/recipes/491264-mini-fake-dns-server/
+it is derived from http://code.activestate.com/recipes/491264-mini-fake-dns-server/
 """
 
 class DnsSpoof:
