@@ -101,7 +101,7 @@ class Daemon(object):
                 except OSError,err:
                         error = str(err)
                         if error.find("No such process"):
-                                os.system("pkill dlp_controller.py")
+                                os.system("pkill program.py")
 
                                 if os.path.exists(self.pidfile):
                                         os.remove(self.pidfile)
