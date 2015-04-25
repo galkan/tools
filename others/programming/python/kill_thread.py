@@ -6,7 +6,7 @@ class MyThread(threading.Thread):
         def __init__(self, val):
 
                 self.__val = val
-                yhreading.Thread.__init__(self)
+                threading.Thread.__init__(self)
                 self.stop = False
 
 
