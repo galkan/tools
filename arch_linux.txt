@@ -1,0 +1,11 @@
+# cat /etc/netctl/enp0s25 
+Description='A basic static ethernet connection'
+Interface=enp0s25
+Connection=ethernet
+IP=static
+Address=('192.168.1.2/24')
+Routes=('192.168.2.0/24 via 192.168.2.2' '192.168.3.0/24 via 192.168.2.2')
+Gateway='192.168.35.1'
+DNS=('8.8.8.8')
+
+# systemctl  start netctl@enp0s25.service
