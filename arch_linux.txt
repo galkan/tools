@@ -9,3 +9,8 @@ Gateway='192.168.35.1'
 DNS=('8.8.8.8')
 
 # systemctl  start netctl@enp0s25.service
+
+# cat .xinitrc 
+exec cinnamon-session
+
+# chmod 755 .xinitrc 
