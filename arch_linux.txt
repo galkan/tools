@@ -14,3 +14,12 @@ DNS=('8.8.8.8')
 exec cinnamon-session
 
 # chmod 755 .xinitrc 
+
+
+###
+###
+
+# lsmod | grep tun
+# modprobe tun
+# find /lib/modules/ -iname 'tun.ko.gz'
+# insmod /lib/modules/3.6.9-1-ARCH/kernel/drivers/net/tun.ko.gz
